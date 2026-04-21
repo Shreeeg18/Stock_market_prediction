@@ -1,6 +1,8 @@
 import numpy as np
+import pandas as pd
 import yfinance as yf
 from sklearn.preprocessing import MinMaxScaler
+
 
 
 def fetch_stock_data(stock):
