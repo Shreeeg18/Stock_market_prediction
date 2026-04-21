@@ -1,7 +1,7 @@
 fastapi
 uvicorn
-numpy
-pandas
+tensorflow==2.16.1
 yfinance
 scikit-learn
-tensorflow
+pandas
+numpy
