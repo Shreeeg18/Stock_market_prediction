@@ -2,21 +2,35 @@ import numpy as np
 import yfinance as yf
 from sklearn.preprocessing import MinMaxScaler
 
+
 def fetch_stock_data(stock):
+    stock = stock.upper().strip()
+
     df = yf.download(
-        stock,
-        period="1y",
+        tickers=stock,
+        period="2y",
+        interval="1d",
         auto_adjust=False,
-        progress=False
+        progress=False,
+        threads=False
     )
 
     if df.empty:
-        raise ValueError(f"No data found for {stock}")
+        ticker = yf.Ticker(stock)
+        df = ticker.history(
+            period="2y",
+            interval="1d",
+            auto_adjust=False
+        )
 
-    if isinstance(df.columns, tuple):
+    if df.empty:
+        raise ValueError(f"No data found for {stock}. Yahoo Finance may be blocking the request or the ticker is invalid.")
+
+    if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
 
     return df
+
 
 def preprocess_data(df):
     data = df.filter(["Close"])
